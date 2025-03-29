@@ -52,15 +52,40 @@ int main(){
 		int clientfd = accept(sockfd, (struct sockaddr_in*) &client_addr, &client_addr_len);
 		if (clientfd > 0 ){
 			puts("[*]Client Connected!");
-			char* respond = "HTTP/1.1 200 OK\r\n\r\n";
-			if (send(clientfd, respond, strlen(respond), 0) < 0){
-				puts("[!]Failed! Cannot send respond!");
+			if(!fork()){
+			// Handle Connection 
+			// handleConnection(clientfd);
+				handleConnection(clientfd);
+
+
 			}
+			//char* respond = "HTTP/1.1 200 OK\r\n\r\n";
+			//if (send(clientfd, respond, strlen(respond), 0) < 0){
+			//	puts("[!]Failed! Cannot send respond!");
+			//}
 		}else{
 			puts("[!]Failed! Cannot accept client request");
 			exit(EXIT_FAILURE);
 		}
 	}	
 	exit(0);
+
+}
+
+
+void handleConnection(int clientfd){
+		puts("[*]Handling a Connection!");
+		char *buffer;
+		buffer = malloc(1024*(sizeof(char)));
+		int bytes_recv = recv(clientfd, buffer, malloc_usable_size(buffer),0);
+		
+		if (bytes_recv < 0 ){
+				puts("[!]Failed! No Bytes Received!");
+				exit(EXIT_FAILURE);
+		}
+
+		printf("Input: %s\n\n",buffer);
+
+		return;
 
 }
