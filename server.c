@@ -7,6 +7,8 @@
 
 #define PORT 8080
 
+void handleConnection();
+
 int main(){
 	struct sockaddr_in inbound_socket;
 	// Create a socket
